@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#canvas canvas {
+    display: block;
+}
+
+/*#ui {
+    position: absolute;
+    left:10px;
+    top:10px;
+    width:100%;
+    height:20px;
+}*/

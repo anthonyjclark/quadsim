@@ -1,0 +1,18 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/ajc/Documents/projects/quadsim"
+		}
+	],
+	"settings":
+	{
+		"LSP":
+		{
+			"eslint":
+			{
+				"enabled": true
+			}
+		}
+	}
+}

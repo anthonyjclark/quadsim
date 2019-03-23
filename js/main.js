@@ -15,49 +15,39 @@ var objects = {};
 // Control vars
 var motor_direction = "back";
 
+// UI
+var is_paused = false;
+
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// const DEFALUT_CAMERA_LOOKAT = [-10, 0, -100];
+function togglePlayPause() {
+    is_paused = !is_paused;
+}
 
-// resetCamera() {
-// this.controls.reset();
-// }
-
-// follow(objIdx) {
-// this.controls.enabled = false;
-// this.isFollowing = true;
-// this.followObject = this.scene.getObjectByName(this.objNames[objIdx || 0]);
-// }
-
-// unfollow() {
-// this.controls.enabled = true;
-// this.isFollowing = false;
-// this.followObject = null;
-// }
-
-// play() {
-// this.actions.forEach((action) => {
-// action.paused = false;
-// });
-// }
-
-// pause() {
-// this.actions.forEach((action) => {
-// action.paused = true;
-// });
-// }
+function resetCamera() {
+    controls.reset();
+}
 
 init();
 animate();
 
 function init() {
+    initUI();
     initTHREE();
     initCANNON();
     initLeg();
+}
+
+function initUI() {
+    var pauseButton = document.getElementById("btn-play-pause");
+    pauseButton.addEventListener("click", togglePlayPause, false);
+
+    var resetCamButton = document.getElementById("btn-reset-camera");
+    resetCamButton.addEventListener("click", resetCamera, false);
 }
 
 function initTHREE() {
@@ -68,7 +58,7 @@ function initTHREE() {
         far = 500,
         default_camera_position = [-8, 8, 8];
 
-    canvasContainer = document.getElementById("canvas");
+    var canvasContainer = document.getElementById("canvas");
 
     // Renderer setup
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -254,15 +244,15 @@ function animate(time) {
     // camera.lookAt(cubeT.position);
     // }
 
-    // motor.rotationalLimitMotor2.setMotor(4, 20);
-    // b.phy.j[0].rotationalLimitMotor1.setMotor(0, 4);
-    // b.phy.j[1].rotationalLimitMotor1.setMotor(0, 4);
-
-    if (lastTime !== undefined) {
-        var dt = (time - lastTime) / 1000;
-        world.step(fixedTimeStep, dt, maxSubSteps);
+    if (!is_paused) {
+        if (lastTime !== undefined) {
+            var dt = (time - lastTime) / 1000;
+            world.step(fixedTimeStep, dt, maxSubSteps);
+        }
+        lastTime = time;
+    } else {
+        lastTime = undefined;
     }
-    lastTime = time;
 
     // Update rendered transform of all objects
     for (var obj of Object.values(objects)) {

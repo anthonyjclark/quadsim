@@ -7,10 +7,10 @@ body {
     display: block;
 }
 
-/*#ui {
+#ui {
     position: absolute;
     left:10px;
     top:10px;
     width:100%;
     height:20px;
-}*/
+}
